@@ -9,13 +9,13 @@ import se.mah.k3lara.skaneAPI.xmalparser.Parser;
 public class TestClass {
 
 	public static void main(String[] args) {
-		System.out.println("// Results when searching for Sölvesborg resecentrum - Malmö Gustav Adolfs torg");
-		String searchURL = Constants.getURL("10001","80100",20); //Malmö C = 80000,  Malmö GAtorg 80100, Häsleholm C 93070 Kolla skånetrafiken för fler koder
+		System.out.println("// Results when searching for Sï¿½lvesborg resecentrum - Malmï¿½ Gustav Adolfs torg");
+		String searchURL = Constants.getURL("80000","80100",20); //Malmï¿½ C = 80000,  Malmï¿½ GAtorg 80100, Hï¿½sleholm C 93070 Kolla skï¿½netrafiken fï¿½r fler koder
 		Journeys journeys = Parser.getJourneys(searchURL);
 		for (Journey journey : journeys.getJourneys()) {
 			System.out.print(journey.getStartStation()+" - ");
 			System.out.print(journey.getEndStation());
-			System.out.println(" Departs in "+journey.getTimeToDeparture()+ " minutes");
+			System.out.println(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
 		} 
 		
 	   System.out.println("// Stations when searching for stations containing \"Malm\"");
