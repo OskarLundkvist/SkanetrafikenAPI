@@ -11,7 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+
+import se.mah.k3lara.skaneAPI.model.Station;
+import se.mah.k3lara.skaneAPI.xmalparser.Parser;
+
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class GUI extends JFrame {
 
@@ -56,6 +63,15 @@ public class GUI extends JFrame {
 		textField.setColumns(10);
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Station> searchStations = new ArrayList<Station>(); 
+				searchStations.addAll(Parser.getStationsFromURL(textField.getText()));
+				for (Station s: searchStations){
+					System.out.println(s.getStationName());
+				}
+			}
+		});
 		btnSearch.setBounds(10, 72, 182, 23);
 		contentPane.add(btnSearch);
 		
