@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -25,7 +26,9 @@ import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+
 import java.awt.Component;
+
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -36,7 +39,8 @@ public class GUI extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private Station station;
-	ArrayList<Station> searchStations = new ArrayList<Station>();
+	private ArrayList<Station> searchStations = new ArrayList<Station>();
+	private DefaultListModel<Object> listModel = new DefaultListModel<Object>();
 
 	/**
 	 * Launch the application.
@@ -76,19 +80,17 @@ public class GUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				searchStations.addAll(Parser.getStationsFromURL(textField.getText()));
+				listModel.removeAllElements();
+				for(Station s : searchStations){
+					listModel.addElement(s.getStationName());
+					System.out.println(s.getStationName());
+				}
+				
 			}
 		});
 		contentPane.add(btnSearch);
 		
-		JList list = new JList<Object>();
-		list.setModel(new AbstractListModel<Object>() {
-			public int getSize() {
-				return searchStations.size();
-			}
-			public Object getElementAt(int index) {
-				return searchStations.get(index);
-			}
-		});
+		JList<Object> list = new JList<Object>(listModel);
 		list.setBounds(0, 52, 200, 509);
 		contentPane.add(list);
 		
