@@ -25,14 +25,18 @@ import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTable table;
-	private String[] stations = new String[2];
 	private Station station;
+	ArrayList<Station> searchStations = new ArrayList<Station>();
 
 	/**
 	 * Launch the application.
@@ -61,48 +65,39 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(200, 0, 600, 600);
-		contentPane.add(lblNewLabel);
-		
 		textField = new JTextField();
-		textField.setBounds(0, 0, 200, 61);
+		textField.setBounds(0, 0, 200, 30);
 		textField.setBackground(Color.WHITE);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(10, 72, 182, 23);
+		btnSearch.setBounds(0, 30, 200, 23);
 		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ArrayList<Station> searchStations = new ArrayList<Station>(); 
+			public void actionPerformed(ActionEvent e) { 
 				searchStations.addAll(Parser.getStationsFromURL(textField.getText()));
-				for (int c = 0; c <= 2; c++){
-					stations[c] = new String (station.getStationName());
-				}
-				System.out.println(stations[0]);
-				System.out.println(stations[1]);
-				System.out.println(stations[2]);
 			}
 		});
 		contentPane.add(btnSearch);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(0, 0, 200, 600);
-		textArea.setBackground(UIManager.getColor("DesktopIcon.borderRimColor"));
-		contentPane.add(textArea);
-		
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
+		JList list = new JList<Object>();
+		list.setModel(new AbstractListModel<Object>() {
 			public int getSize() {
-				return stations.length;
+				return searchStations.size();
 			}
 			public Object getElementAt(int index) {
-				return stations[index];
+				return searchStations.get(index);
 			}
 		});
-		list.setBounds(0, 93, 200, 307);
+		list.setBounds(0, 52, 200, 509);
 		contentPane.add(list);
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBackground(Color.BLACK);
+		separator.setForeground(Color.BLACK);
+		separator.setBounds(200, 0, 1, 561);
+		contentPane.add(separator);
 		
 	}
 }
