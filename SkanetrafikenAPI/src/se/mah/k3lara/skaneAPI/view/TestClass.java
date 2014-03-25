@@ -22,7 +22,7 @@ public class TestClass {
 		ArrayList<Station> searchStations = new ArrayList<Station>(); 
 		searchStations.addAll(Parser.getStationsFromURL("Malm"));
 		for (Station s: searchStations){
-			System.out.println(s.getStationName());
+			System.out.println(s.getStationNbr() + s.getStationName());
 		}
 
 	}

@@ -14,6 +14,8 @@ import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 
 import org.jdesktop.swingx.JXMapViewer;
@@ -31,7 +33,6 @@ import org.jdesktop.swingx.painter.Painter;
 
 import SkanetrafikenGUI.FancyWaypointRenderer;
 import SkanetrafikenGUI.MyWaypoint;
-
 import se.mah.k3lara.skaneAPI.model.Station;
 import se.mah.k3lara.skaneAPI.xmalparser.Parser;
 
@@ -59,6 +60,9 @@ public class GUI extends JFrame {
 	private Station station;
 	private ArrayList<Station> searchStations = new ArrayList<Station>();
 	private DefaultListModel<Object> listModel = new DefaultListModel<Object>();
+	private JList<Object> list = new JList<Object>(listModel);
+	private String selectedListItem;
+
 
 	/**
 	 * Launch the application.
@@ -155,9 +159,18 @@ public class GUI extends JFrame {
 		});
 		contentPane.add(btnSearch);
 		
-		JList<Object> list = new JList<Object>(listModel);
 		list.setBounds(0, 52, 200, 509);
 		contentPane.add(list);
+		
+		list.addListSelectionListener(new ListSelectionListener(){
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				selectedListItem = list.getSelectedValue().toString();
+				System.out.println(selectedListItem + " " + station.getStationNbr());
+			}
+			
+		});
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
