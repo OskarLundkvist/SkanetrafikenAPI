@@ -96,7 +96,7 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JXMapViewer mapViewer = new JXMapViewer();
+		final JXMapViewer mapViewer = new JXMapViewer();
 		mapViewer.setBounds(200, 0, 800, 600);
 		
 		contentPane.add(mapViewer);
@@ -172,6 +172,36 @@ public class GUI extends JFrame {
 		list.addListSelectionListener(new ListSelectionListener(){
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				// Create new positions before repaint
+				GeoPosition malmoCentralen = new GeoPosition(55.609147, 12.999034);
+				GeoPosition malmoUbatshallen = new GeoPosition(55.614969, 12.984621);
+
+				// Create a track from the geo-positions
+				List<GeoPosition> track = Arrays.asList(malmoCentralen, malmoUbatshallen);
+				RoutePainter routePainter = new RoutePainter(track);
+
+				// Set the focus
+				mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+
+				// Create waypoints from the geo-positions
+				Set<MyWaypoint> waypoints = new HashSet<MyWaypoint>(Arrays.asList(
+						new MyWaypoint("A", Color.ORANGE, malmoCentralen),
+						new MyWaypoint("B", Color.RED, malmoUbatshallen)));
+
+				// Create a waypoint painter that takes all the waypoints
+				WaypointPainter<MyWaypoint> waypointPainter = new WaypointPainter<MyWaypoint>();
+				waypointPainter.setWaypoints(waypoints);
+				waypointPainter.setRenderer(new FancyWaypointRenderer());
+				
+				// Create a compound painter that uses both the route-painter and the waypoint-painter
+				List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+				painters.add(routePainter);
+				painters.add(waypointPainter);
+				// Paint new route
+				CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+				mapViewer.setOverlayPainter(painter);
+				mapViewer.repaint();
+				
 				selectedListItem = list.getSelectedValue().toString();
 				System.out.println(selectedListItem);
 				selectedListItem = selectedListItem.replaceAll(" ", "");
