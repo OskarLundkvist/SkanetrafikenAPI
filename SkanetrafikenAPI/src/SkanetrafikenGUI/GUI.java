@@ -66,6 +66,7 @@ public class GUI extends JFrame {
 	private JList<Object> list = new JList<Object>(listModel);
 	private String selectedListItem;
 	private List<Station> selectedStation;
+	private JLabel lblNewLabel = new JLabel();
 
 
 	/**
@@ -180,7 +181,7 @@ public class GUI extends JFrame {
 				for (Journey journey : journeys.getJourneys()) {
 					System.out.print(journey.getStartStation()+" - ");
 					System.out.print(journey.getEndStation());
-					System.out.println(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
+					lblNewLabel = new JLabel(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
 				}
 				System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 			}
@@ -193,6 +194,9 @@ public class GUI extends JFrame {
 		separator.setForeground(Color.BLACK);
 		separator.setBounds(200, 0, 1, 561);
 		contentPane.add(separator);
+		
+		lblNewLabel.setBounds(0, 492, 200, 69);
+		contentPane.add(lblNewLabel);
 		
 	}
 }
