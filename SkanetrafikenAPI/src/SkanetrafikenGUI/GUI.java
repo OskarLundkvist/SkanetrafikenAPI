@@ -162,18 +162,13 @@ public class GUI extends JFrame {
 			}
 		});
 		contentPane.add(btnSearch);
+
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		
-		JButton btnClear = new JButton("Clear");
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				listModel.clear();
-				list.removeAll();
-			}
-		});
-		btnClear.setBounds(0, 52, 200, 23);
-		contentPane.add(btnClear);
+		lblNewLabel.setBounds(0, 54, 200, 507);
+		contentPane.add(lblNewLabel);
 		
-		list.setBounds(0, 77, 200, 484);
+		list.setBounds(0, 54, 200, 507);
 		contentPane.add(list);
 		
 		list.addListSelectionListener(new ListSelectionListener(){
