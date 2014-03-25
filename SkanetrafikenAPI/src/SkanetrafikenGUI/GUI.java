@@ -172,52 +172,56 @@ public class GUI extends JFrame {
 		list.addListSelectionListener(new ListSelectionListener(){
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// Create new positions before repaint
-				GeoPosition malmoCentralen = new GeoPosition(55.609147, 12.999034);
-				GeoPosition malmoUbatshallen = new GeoPosition(55.614969, 12.984621);
-
-				// Create a track from the geo-positions
-				List<GeoPosition> track = Arrays.asList(malmoCentralen, malmoUbatshallen);
-				RoutePainter routePainter = new RoutePainter(track);
-
-				// Set the focus
-				mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
-
-				// Create waypoints from the geo-positions
-				Set<MyWaypoint> waypoints = new HashSet<MyWaypoint>(Arrays.asList(
-						new MyWaypoint("A", Color.ORANGE, malmoCentralen),
-						new MyWaypoint("B", Color.RED, malmoUbatshallen)));
-
-				// Create a waypoint painter that takes all the waypoints
-				WaypointPainter<MyWaypoint> waypointPainter = new WaypointPainter<MyWaypoint>();
-				waypointPainter.setWaypoints(waypoints);
-				waypointPainter.setRenderer(new FancyWaypointRenderer());
-				
-				// Create a compound painter that uses both the route-painter and the waypoint-painter
-				List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-				painters.add(routePainter);
-				painters.add(waypointPainter);
-				// Paint new route
-				CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-				mapViewer.setOverlayPainter(painter);
-				mapViewer.repaint();
-				
-				selectedListItem = list.getSelectedValue().toString();
-				System.out.println(selectedListItem);
-				selectedListItem = selectedListItem.replaceAll(" ", "");
-				System.out.println(selectedListItem);
-				selectedStation = Parser.getStationsFromURL(selectedListItem);
-				System.out.println(selectedStation.get(0).getStationNbr());
-				String searchURL = Constants.getURL("80000",selectedStation.get(0).getStationNbr(),1);
-				Journeys journeys = Parser.getJourneys(searchURL);
-				for (Journey journey : journeys.getJourneys()) {
-					System.out.print(journey.getStartStation()+" - ");
-					System.out.print(journey.getEndStation());
-					lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus " + journey.getLineOnFirstJourney() + " " + journey.getArrDateTime());
+				if (!e.getValueIsAdjusting()){
+					// Create new positions before repaint
+					GeoPosition malmoCentralen = new GeoPosition(55.609147, 12.999034);
+					GeoPosition malmoUbatshallen = new GeoPosition(55.614969, 12.984621);
+	
+					// Create a track from the geo-positions
+					List<GeoPosition> track = Arrays.asList(malmoCentralen, malmoUbatshallen);
+					RoutePainter routePainter = new RoutePainter(track);
+	
+					// Set the focus
+					mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+	
+					// Create waypoints from the geo-positions
+					Set<MyWaypoint> waypoints = new HashSet<MyWaypoint>(Arrays.asList(
+							new MyWaypoint("A", Color.ORANGE, malmoCentralen),
+							new MyWaypoint("B", Color.RED, malmoUbatshallen)));
+	
+					// Create a waypoint painter that takes all the waypoints
+					WaypointPainter<MyWaypoint> waypointPainter = new WaypointPainter<MyWaypoint>();
+					waypointPainter.setWaypoints(waypoints);
+					waypointPainter.setRenderer(new FancyWaypointRenderer());
+					
+					// Create a compound painter that uses both the route-painter and the waypoint-painter
+					List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+					painters.add(routePainter);
+					painters.add(waypointPainter);
+					
+					CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+					mapViewer.setOverlayPainter(painter);
+					mapViewer.repaint();
+					
+					selectedListItem = (String) list.getSelectedValue();
+					if(selectedListItem != null){
+						System.out.println(selectedListItem);
+						selectedListItem = selectedListItem.replaceAll(" ", "");
+						System.out.println(selectedListItem);
+						selectedStation = Parser.getStationsFromURL(selectedListItem);
+						System.out.println(selectedStation.get(0).getStationNbr());
+						String searchURL = Constants.getURL("80000",selectedStation.get(0).getStationNbr(),1);
+						Journeys journeys = Parser.getJourneys(searchURL);
+						for (Journey journey : journeys.getJourneys()) {
+							System.out.print(journey.getStartStation()+" - ");
+							System.out.print(journey.getEndStation());
+							lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus " + journey.getLineOnFirstJourney() + " " + journey.getArrDateTime());
+						}
+						System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
+						listModel.removeAllElements();
+						list.removeAll();
+					}
 				}
-				System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
-				listModel.removeAllElements();
-				list.removeAll();
 			}
 		}); 
 	}
