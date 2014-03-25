@@ -163,7 +163,17 @@ public class GUI extends JFrame {
 		});
 		contentPane.add(btnSearch);
 		
-		list.setBounds(0, 52, 200, 509);
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				listModel.clear();
+				list.removeAll();
+			}
+		});
+		btnClear.setBounds(0, 52, 200, 23);
+		contentPane.add(btnClear);
+		
+		list.setBounds(0, 77, 200, 484);
 		contentPane.add(list);
 		
 		list.addListSelectionListener(new ListSelectionListener(){
@@ -181,22 +191,11 @@ public class GUI extends JFrame {
 				for (Journey journey : journeys.getJourneys()) {
 					System.out.print(journey.getStartStation()+" - ");
 					System.out.print(journey.getEndStation());
-					lblNewLabel = new JLabel(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
+					lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus number " + journey.getLineOnFirstJourney());
 				}
 				System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 			}
 			
 		}); 
-		
-		JSeparator separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBackground(Color.BLACK);
-		separator.setForeground(Color.BLACK);
-		separator.setBounds(200, 0, 1, 561);
-		contentPane.add(separator);
-		
-		lblNewLabel.setBounds(0, 492, 200, 69);
-		contentPane.add(lblNewLabel);
-		
 	}
 }
