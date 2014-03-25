@@ -158,13 +158,11 @@ public class GUI extends JFrame {
 					listModel.addElement(s.getStationName());
 					System.out.println(s.getStationName());
 				}
-				
 			}
 		});
 		contentPane.add(btnSearch);
 
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		
 		lblNewLabel.setBounds(0, 54, 200, 507);
 		contentPane.add(lblNewLabel);
 		
@@ -172,7 +170,6 @@ public class GUI extends JFrame {
 		contentPane.add(list);
 		
 		list.addListSelectionListener(new ListSelectionListener(){
-
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				selectedListItem = list.getSelectedValue().toString();
@@ -186,11 +183,12 @@ public class GUI extends JFrame {
 				for (Journey journey : journeys.getJourneys()) {
 					System.out.print(journey.getStartStation()+" - ");
 					System.out.print(journey.getEndStation());
-					lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus number " + journey.getLineOnFirstJourney());
+					lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus " + journey.getLineOnFirstJourney() + " " + journey.getArrDateTime());
 				}
 				System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
+				listModel.removeAllElements();
+				list.removeAll();
 			}
-			
 		}); 
 	}
 }
