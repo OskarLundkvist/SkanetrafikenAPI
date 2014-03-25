@@ -33,7 +33,10 @@ import org.jdesktop.swingx.painter.Painter;
 
 import SkanetrafikenGUI.FancyWaypointRenderer;
 import SkanetrafikenGUI.MyWaypoint;
+import se.mah.k3lara.skaneAPI.model.Journey;
+import se.mah.k3lara.skaneAPI.model.Journeys;
 import se.mah.k3lara.skaneAPI.model.Station;
+import se.mah.k3lara.skaneAPI.view.Constants;
 import se.mah.k3lara.skaneAPI.xmalparser.Parser;
 
 import java.awt.Color;
@@ -62,6 +65,7 @@ public class GUI extends JFrame {
 	private DefaultListModel<Object> listModel = new DefaultListModel<Object>();
 	private JList<Object> list = new JList<Object>(listModel);
 	private String selectedListItem;
+	private List<Station> selectedStation;
 
 
 	/**
@@ -167,10 +171,18 @@ public class GUI extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				selectedListItem = list.getSelectedValue().toString();
-				System.out.println(selectedListItem + " " + station.getStationNbr());
+				selectedStation = Parser.getStationsFromURL(selectedListItem);
+				System.out.println(selectedStation.get(0).getStationNbr());
+				String searchURL = Constants.getURL("80000",selectedStation.get(0).getStationNbr(),1);
+				Journeys journeys = Parser.getJourneys(searchURL);
+				for (Journey journey : journeys.getJourneys()) {
+					System.out.print(journey.getStartStation()+" - ");
+					System.out.print(journey.getEndStation());
+					System.out.println(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
+				}
 			}
 			
-		});
+		}); 
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
