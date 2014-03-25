@@ -153,7 +153,6 @@ public class GUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				searchStations.addAll(Parser.getStationsFromURL(textField.getText()));
-				listModel.removeAllElements();
 				for(Station s : searchStations){
 					listModel.addElement(s.getStationName());
 					System.out.println(s.getStationName());
@@ -171,6 +170,9 @@ public class GUI extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				selectedListItem = list.getSelectedValue().toString();
+				System.out.println(selectedListItem);
+				selectedListItem = selectedListItem.replaceAll(" ", "");
+				System.out.println(selectedListItem);
 				selectedStation = Parser.getStationsFromURL(selectedListItem);
 				System.out.println(selectedStation.get(0).getStationNbr());
 				String searchURL = Constants.getURL("80000",selectedStation.get(0).getStationNbr(),1);

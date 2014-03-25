@@ -20,7 +20,7 @@ public class TestClass {
 		
 	   System.out.println("// Stations when searching for stations containing \"Malm\"");
 		ArrayList<Station> searchStations = new ArrayList<Station>(); 
-		searchStations.addAll(Parser.getStationsFromURL("Malm"));
+		searchStations.addAll(Parser.getStationsFromURL("LundC"));
 		for (Station s: searchStations){
 			System.out.println(s.getStationNbr() + s.getStationName());
 		}
