@@ -180,6 +180,7 @@ public class GUI extends JFrame {
 					System.out.print(journey.getEndStation());
 					System.out.println(" Departs in "+journey.getTimeToDeparture()+ " minutes " + journey.getLineOnFirstJourney());
 				}
+				System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 			}
 			
 		}); 
