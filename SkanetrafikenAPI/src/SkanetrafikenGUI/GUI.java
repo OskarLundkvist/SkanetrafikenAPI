@@ -98,46 +98,67 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		/***
+		 * Create map
+		 */
 		final JXMapViewer mapViewer = new JXMapViewer();
 		mapViewer.setBounds(200, 0, 800, 600);
-		
 		contentPane.add(mapViewer);
 		
-		// Create a TileFactoryInfo for OpenStreetMap
+		/***
+		 * Configure JXMapViewer 
+		 */
 		TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
 		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 		tileFactory.setThreadPoolSize(8);
 		mapViewer.setTileFactory(tileFactory);
-		
+		/***
+		 * Set start positions
+		 */
 		GeoPosition malmoCentralen = new GeoPosition(55.609147, 12.999034);
 		GeoPosition malmoNobeltorget = new GeoPosition(55.591298, 13.019252);
 
-		// Create a track from the geo-positions
+		/***
+		 * Create line between positions
+		 */
 		List<GeoPosition> track = Arrays.asList(malmoCentralen, malmoNobeltorget);
 		RoutePainter routePainter = new RoutePainter(track);
 
-		// Set the focus
+		/***
+		 * Adjust focus to fit the line
+		 */
 		mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
 
-		// Create waypoints from the geo-positions
+		/***
+		 * Create waypoints
+		 */
 		Set<MyWaypoint> waypoints = new HashSet<MyWaypoint>(Arrays.asList(
 				new MyWaypoint("A", Color.ORANGE, malmoCentralen),
 				new MyWaypoint("B", Color.RED, malmoNobeltorget)));
 
-		// Create a waypoint painter that takes all the waypoints
+		/***
+		 * Send waypoints to painter
+		 */
 		WaypointPainter<MyWaypoint> waypointPainter = new WaypointPainter<MyWaypoint>();
 		waypointPainter.setWaypoints(waypoints);
 		waypointPainter.setRenderer(new FancyWaypointRenderer());
 		
-		// Create a compound painter that uses both the route-painter and the waypoint-painter
+		/***
+		 * Combine painters for waypoints and line
+		 */
 		List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
 		painters.add(routePainter);
 		painters.add(waypointPainter);
 		
+		/***
+		 * Paint overlays to map
+		 */
 		CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
 		mapViewer.setOverlayPainter(painter);
 		
-		// Add interactions
+		/***
+		 * Add map interactions
+		 */
 		MouseInputListener mia = new PanMouseInputListener(mapViewer);
 		mapViewer.addMouseListener(mia);
 		mapViewer.addMouseMotionListener(mia);
@@ -196,34 +217,53 @@ public class GUI extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()){
-					// Create new positions before repaint
+					/***
+					 * Set new positions
+		 			 */
 					GeoPosition malmoCentralen = new GeoPosition(55.609147, 12.999034);
 					GeoPosition malmoUbatshallen = new GeoPosition(55.614969, 12.984621);
 	
-					// Create a track from the geo-positions
+					/***
+					 * Create line between positions
+		 			 */
 					List<GeoPosition> track = Arrays.asList(malmoCentralen, malmoUbatshallen);
 					RoutePainter routePainter = new RoutePainter(track);
 	
-					// Set the focus
+					/***
+					 * Adjust focus to fit the line
+		 			 */
 					mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
 	
-					// Create waypoints from the geo-positions
+					/***
+					 * Create waypoints
+		 			 */
 					Set<MyWaypoint> waypoints = new HashSet<MyWaypoint>(Arrays.asList(
 							new MyWaypoint("A", Color.ORANGE, malmoCentralen),
 							new MyWaypoint("B", Color.RED, malmoUbatshallen)));
-	
-					// Create a waypoint painter that takes all the waypoints
+					
+					/***
+					 * Send waypoints to painter
+		 			 */
 					WaypointPainter<MyWaypoint> waypointPainter = new WaypointPainter<MyWaypoint>();
 					waypointPainter.setWaypoints(waypoints);
 					waypointPainter.setRenderer(new FancyWaypointRenderer());
 					
-					// Create a compound painter that uses both the route-painter and the waypoint-painter
+					/***
+					 * Combine painters for waypoints and line
+		 			 */
 					List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
 					painters.add(routePainter);
 					painters.add(waypointPainter);
 					
+					/***
+					 * Paint overlays to map
+		 			 */
 					CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
 					mapViewer.setOverlayPainter(painter);
+					
+					/***
+					 * Repaint map
+		 			 */
 					mapViewer.repaint();
 					
 					/***
