@@ -231,8 +231,8 @@ public class GUI extends JFrame {
 							lblNewLabel3.setText(" Take bus " + journey.getLineOnFirstJourney());
 						}
 						System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
-						listModel.removeAllElements();
-						list.removeAll();
+						//listModel.removeAllElements();
+						//list.removeAll();
 					}
 				}
 			}
