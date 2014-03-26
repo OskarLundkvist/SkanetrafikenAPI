@@ -54,6 +54,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class GUI extends JFrame {
 
@@ -67,6 +68,8 @@ public class GUI extends JFrame {
 	private String selectedListItem;
 	private List<Station> selectedStation;
 	private JLabel lblNewLabel = new JLabel();
+	private JLabel lblNewLabel2 = new JLabel();
+	private JLabel lblNewLabel3 = new JLabel();
 
 
 	/**
@@ -161,12 +164,20 @@ public class GUI extends JFrame {
 			}
 		});
 		contentPane.add(btnSearch);
-
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(0, 54, 200, 507);
-		contentPane.add(lblNewLabel);
 		
-		list.setBounds(0, 54, 200, 507);
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		lblNewLabel.setBounds(0, 54, 200, 23);
+		contentPane.add(lblNewLabel);
+
+		lblNewLabel2.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		lblNewLabel2.setBounds(0, 87, 200, 23);	
+		contentPane.add(lblNewLabel2);
+		
+		lblNewLabel3.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		lblNewLabel3.setBounds(1, 119, 200, 23);
+		contentPane.add(lblNewLabel3);
+		
+		list.setBounds(0, 154, 200, 407);
 		contentPane.add(list);
 		
 		list.addListSelectionListener(new ListSelectionListener(){
@@ -215,7 +226,9 @@ public class GUI extends JFrame {
 						for (Journey journey : journeys.getJourneys()) {
 							System.out.print(journey.getStartStation()+" - ");
 							System.out.print(journey.getEndStation());
-							lblNewLabel.setText(" Departs in "+journey.getTimeToDeparture()+ " minutes on bus " + journey.getLineOnFirstJourney() + " " + journey.getArrDateTime());
+							lblNewLabel.setText(" Departs in " + journey.getTimeToDeparture() + " min from " + journey.getStartStation());
+							lblNewLabel2.setText(" Travel time is " + journey.getTravelMinutes() + " min");
+							lblNewLabel3.setText(" Take bus " + journey.getLineOnFirstJourney());
 						}
 						System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 						listModel.removeAllElements();
