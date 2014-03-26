@@ -63,6 +63,7 @@ public class GUI extends JFrame {
 	private JTable table;
 	private Station station;
 	private ArrayList<Station> searchStations = new ArrayList<Station>();
+	// Declares a list of objects to be used in the JList.
 	private DefaultListModel<Object> listModel = new DefaultListModel<Object>();
 	private JList<Object> list = new JList<Object>(listModel);
 	private String selectedListItem;
@@ -144,12 +145,20 @@ public class GUI extends JFrame {
 		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
 		mapViewer.addKeyListener(new PanKeyListener(mapViewer));
 		
+		/***
+		 * Create textfield for search
+		 */
 		textField = new JTextField();
 		textField.setBounds(0, 0, 200, 30);
 		textField.setBackground(Color.WHITE);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
+		/***
+		 * Add searchbutton and actionListener.
+		 * Uses the textfield as an argument for station api.
+		 * Adds each result to the listModel.
+		 */
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(0, 30, 200, 23);
 		btnSearch.addActionListener(new ActionListener() {
@@ -157,12 +166,14 @@ public class GUI extends JFrame {
 				searchStations.addAll(Parser.getStationsFromURL(textField.getText()));
 				for(Station s : searchStations){
 					listModel.addElement(s.getStationName());
-					System.out.println(s.getStationName());
 				}
 			}
 		});
 		contentPane.add(btnSearch);
 		
+		/***
+		 * Creates labels for result from journey api.
+		 */
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel.setBounds(0, 54, 200, 23);
 		contentPane.add(lblNewLabel);
@@ -171,9 +182,16 @@ public class GUI extends JFrame {
 		lblNewLabel2.setBounds(0, 87, 200, 23);	
 		contentPane.add(lblNewLabel2);
 		
+		/***
+		 * Creates list for results from station api.
+		 */
 		list.setBounds(0, 122, 200, 439);
 		contentPane.add(list);
 		
+		/***
+		 * Creates an actionListener for list.
+		 * Activates on selecting listItem.
+		 */
 		list.addListSelectionListener(new ListSelectionListener(){
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -208,22 +226,24 @@ public class GUI extends JFrame {
 					mapViewer.setOverlayPainter(painter);
 					mapViewer.repaint();
 					
+					/***
+					 * Casts the selectedItem in list to a String.
+					 * Removes whitespaces in the selectedListItem.
+					 * Use selectedListItem as an argument for Parser api.
+					 * Use selectedStation ID api and Malmö C ID as an argument for Constants api.
+					 * Use searchURL as an argument for Journeys api.
+					 * Uses journeys to fill the labels with information from the Journey.
+					 */
 					selectedListItem = (String) list.getSelectedValue();
 					if(selectedListItem != null){
-						System.out.println(selectedListItem);
 						selectedListItem = selectedListItem.replaceAll(" ", "");
-						System.out.println(selectedListItem);
 						selectedStation = Parser.getStationsFromURL(selectedListItem);
-						System.out.println(selectedStation.get(0).getStationNbr());
 						String searchURL = Constants.getURL("80000",selectedStation.get(0).getStationNbr(),1);
 						Journeys journeys = Parser.getJourneys(searchURL);
 						for (Journey journey : journeys.getJourneys()) {
-							System.out.print(journey.getStartStation()+" - ");
-							System.out.print(journey.getEndStation());
 							lblNewLabel.setText(" Departs in " + journey.getTimeToDeparture() + " min from " + journey.getStartStation());
 							lblNewLabel2.setText(" Travel time is " + journey.getTravelMinutes() + " min");
 						}
-						System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 						//listModel.removeAllElements();
 						//list.removeAll();
 					}
