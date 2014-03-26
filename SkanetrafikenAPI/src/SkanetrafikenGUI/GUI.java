@@ -69,8 +69,6 @@ public class GUI extends JFrame {
 	private List<Station> selectedStation;
 	private JLabel lblNewLabel = new JLabel();
 	private JLabel lblNewLabel2 = new JLabel();
-	private JLabel lblNewLabel3 = new JLabel();
-
 
 	/**
 	 * Launch the application.
@@ -173,11 +171,7 @@ public class GUI extends JFrame {
 		lblNewLabel2.setBounds(0, 87, 200, 23);	
 		contentPane.add(lblNewLabel2);
 		
-		lblNewLabel3.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		lblNewLabel3.setBounds(1, 119, 200, 23);
-		contentPane.add(lblNewLabel3);
-		
-		list.setBounds(0, 154, 200, 407);
+		list.setBounds(0, 122, 200, 439);
 		contentPane.add(list);
 		
 		list.addListSelectionListener(new ListSelectionListener(){
@@ -228,7 +222,6 @@ public class GUI extends JFrame {
 							System.out.print(journey.getEndStation());
 							lblNewLabel.setText(" Departs in " + journey.getTimeToDeparture() + " min from " + journey.getStartStation());
 							lblNewLabel2.setText(" Travel time is " + journey.getTravelMinutes() + " min");
-							lblNewLabel3.setText(" Take bus " + journey.getLineOnFirstJourney());
 						}
 						System.out.println(selectedStation.get(0).getLatitude() + " " + selectedStation.get(0).getLongitude());
 						//listModel.removeAllElements();
